@@ -1,8 +1,10 @@
 import React from 'react'
 import ipRegex from 'ip-regex'
-import PropTypes from 'prop-types'
 
 import { Netmask4 } from './netmask46'
+import CidrRange from './CidrRange'
+import BinaryExplained from './BinaryExplained'
+
 import './App.css'
 
 const DEFAULT_CIDR = '192.168.0.37/30'
@@ -57,47 +59,6 @@ function cidrToDisplay(cidr, errorCallBack) {
   }
 }
 
-function CidrRange({ ipRangeData = {} }) {
-  return (
-    <div className="cidr-output">
-      {Object.entries(ipRangeData).map(([key, val]) => (
-        <div className="output-row" key={key}>
-          <div className="output-left">{`${key}:`}</div>
-          <div className="output-right">{val}</div>
-        </div>
-      ))}
-    </div>
-  )
-}
-CidrRange.propTypes = {
-  ipRangeData: PropTypes.object,
-}
-
-function BinaryExplained({ binaryData = {} }) {
-  return (
-    <React.Fragment>
-      <div className="title">
-        <p>In Binary</p>
-      </div>
-      <div className="cidr-output">
-        {Object.entries(binaryData).map(([key, val]) => (
-          <div className="output-row" key={key}>
-            <div className="output-left">{`${key}:`}</div>
-            <div className="output-binary-right">{val}</div>
-          </div>
-        ))}
-      </div>
-      <div className="cidr-output">
-        <p>{'<Base IP> BITWISE AND <Net Mask> = <First IP>'}</p>
-        <p>{'<First IP> BITWISE OR <Host Mask> = <Last IP>'}</p>
-      </div>
-    </React.Fragment>
-  )
-}
-BinaryExplained.propTypes = {
-  binaryData: PropTypes.object,
-}
-
 function App() {
   const [inputBox, setInputBox] = React.useState(DEFAULT_CIDR)
   const [cidr, setCidr] = React.useState(inputBox)
@@ -142,10 +103,10 @@ function App() {
           <p>{errorText}</p>
         </div>
       ) : (
-        <React.Fragment>
+        <>
           <CidrRange {...{ ipRangeData }} />
           <BinaryExplained {...{ binaryData }} />
-        </React.Fragment>
+        </>
       )}
     </div>
   )
