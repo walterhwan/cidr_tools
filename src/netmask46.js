@@ -23,7 +23,7 @@ const ip2long = function(ip) {
   return ((b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]) >>> 0
 }
 
-class Netmask4 {
+export class Netmask4 {
   // input can be new Netmask4('10.0.0.1/32') or Netmask4('10.0.0.1', '32')
   constructor(ip, netmask) {
     if (typeof ip !== 'string') {
@@ -112,9 +112,9 @@ class Netmask4 {
   }
 }
 
-exports.ip2long = ip2long
-exports.long2ip = long2ip
-exports.Netmask4 = Netmask4
+// exports.ip2long = ip2long
+// exports.long2ip = long2ip
+// exports.Netmask4 = Netmask4
 
 // class Netmask6 {
 //   constructor(ipv6, netmask) {

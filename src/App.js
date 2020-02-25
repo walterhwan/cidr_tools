@@ -1,5 +1,6 @@
 import React from 'react'
 import ipRegex from 'ip-regex'
+
 import { Netmask4 } from './netmask46'
 import './App.css'
 
