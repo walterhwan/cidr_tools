@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "35595c262cfabc60cac465f4207e5ad7",
+    "revision": "4e1ccffa361d973b5ed0ae0b1f0dfd64",
     "url": "/cidr_tools/index.html"
   },
   {
-    "revision": "7dac6d6644ae784f40d1",
+    "revision": "35c3a8c6e77f3277f734",
     "url": "/cidr_tools/static/css/main.beb0fcdf.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/cidr_tools/static/js/2.0eaa07c7.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "7dac6d6644ae784f40d1",
-    "url": "/cidr_tools/static/js/main.54b63926.chunk.js"
+    "revision": "35c3a8c6e77f3277f734",
+    "url": "/cidr_tools/static/js/main.683c8180.chunk.js"
   },
   {
     "revision": "cec56a4cdfde6382f880",
