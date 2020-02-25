@@ -1,5 +1,6 @@
 {
   "name": "cidr_tools",
+  "homepage": "https://walterhwan.github.io/cidr_tools",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
