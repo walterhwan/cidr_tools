@@ -53,8 +53,8 @@ function App() {
         binaryObj = {
           'Base IP': ipv4ToBinary(block.ip),
           'Net Mask': ipv4ToBinary(block.netmask),
-          'Host Mask': ipv4ToBinary(block.hostmask),
           'First IP': ipv4ToBinary(block.first),
+          'Host Mask': ipv4ToBinary(block.hostmask),
           'Last IP': ipv4ToBinary(block.last),
         }
       } catch (err) {
@@ -97,23 +97,25 @@ function App() {
         )}
       </div>
       {/* Binary */}
-      <div className="title">
-        <p>In Binary</p>
-      </div>
-      <div className="cidr-output">
-        {!!cidr &&
-          Object.entries(binaryObj).map(([key, val]) => (
-            <div className="output-row" key={key}>
-              <div className="output-left">{`${key}:`}</div>
-              <div className="output-binary-right">{val}</div>
-            </div>
-          ))}
-      </div>
-
-      <div className="cidr-output">
-        <p>{'<IP> AND <Net Mask> => <First IP>'}</p>
-        <p>{'<First IP> OR <First IP> => <Last IP>'}</p>
-      </div>
+      {cidr && (
+        <React.Fragment>
+          <div className="title">
+            <p>In Binary</p>
+          </div>
+          <div className="cidr-output">
+            {Object.entries(binaryObj).map(([key, val]) => (
+              <div className="output-row" key={key}>
+                <div className="output-left">{`${key}:`}</div>
+                <div className="output-binary-right">{val}</div>
+              </div>
+            ))}
+          </div>
+          <div className="cidr-output">
+            <p>{'<Base IP> BITWISE AND <Net Mask> = <First IP>'}</p>
+            <p>{'<First IP> BITWISE OR <Host Mask> = <Last IP>'}</p>
+          </div>
+        </React.Fragment>
+      )}
     </div>
   )
 }

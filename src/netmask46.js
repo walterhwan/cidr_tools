@@ -68,7 +68,6 @@ export class Netmask4 {
     this.last = long2ip(this.netLong + this.size - 1)
   }
 
-  // Returns true if the given ip or netmask is contained in the block
   contains(ip) {
     if (
       typeof ip === 'string' &&
