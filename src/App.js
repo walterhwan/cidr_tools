@@ -69,7 +69,7 @@ function App() {
     <div className="App">
       {/* Title */}
       <div className="title">
-        <p>CIDR To IP Range</p>
+        <p>CIDR To IP Range Explained</p>
       </div>
       {/* IP Input */}
       <input
