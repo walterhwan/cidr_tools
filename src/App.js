@@ -4,7 +4,7 @@ import ipRegex from 'ip-regex'
 import { Netmask4 } from './netmask46'
 import './App.css'
 
-const DEFAULT_CIDR = '192.168.0.1/32'
+const DEFAULT_CIDR = '192.168.0.1/24'
 
 function App() {
   const [inputBox, setInputBox] = React.useState(DEFAULT_CIDR)

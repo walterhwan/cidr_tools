@@ -1,11 +1,11 @@
 .App {
-  background-color: #282c34;
   min-height: 100vh;
+  width: 940px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
-  font-size: calc(10px + 2vmin);
+  font-size: 30px;
   color: white;
 }
 
@@ -16,7 +16,7 @@
 .cidr-input {
   margin: 30px;
   text-align: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 30px;
 }
 
 .cidr-output {
