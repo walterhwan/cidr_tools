@@ -56,6 +56,7 @@ export class Netmask4 {
       throw new Error(`Invalid ip address: ${ip}`)
     }
 
+    this.ip = ip
     this.cidr = `${ip}/${this.bitmask}`
     this.size = Math.pow(2, 32 - this.bitmask)
     this.netmask = long2ip(this.maskLong)

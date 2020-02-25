@@ -14,12 +14,11 @@
     "sourceType": "module"
   },
   "rules": {
-    "arrow-parens:": "always",
     "no-console": "off",
     "strict": [
       "error",
       "global"
     ],
-    "curly": "warn"
+    "curly": "off"
   }
 }
