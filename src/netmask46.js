@@ -1,27 +1,9 @@
-const long2ip = function(long) {
-  const a = (long & (0xff << 24)) >>> 24
-  const b = (long & (0xff << 16)) >>> 16
-  const c = (long & (0xff << 8)) >>> 8
-  const d = long & 0xff
-  return [a, b, c, d].join('.')
-}
-
-const ip2long = function(ip) {
-  const b = ip.split('.')
-  if (b.length === 0 || b.length > 4) {
-    throw new Error('Invalid IP')
-  }
-  for (let i = 0; i < b.length; i++) {
-    const byte = b[i]
-    if (isNaN(parseInt(byte, 10))) {
-      throw new Error(`Invalid byte: ${byte}`)
-    }
-    if (byte < 0 || byte > 255) {
-      throw new Error(`Invalid byte: ${byte}`)
-    }
-  }
-  return ((b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]) >>> 0
-}
+const {
+  longToIp,
+  ipTolong,
+  bigintToIpv6,
+  ipv6ToBigint,
+} = require('./helper')
 
 export class Netmask4 {
   // input can be new Netmask4('10.0.0.1/32') or Netmask4('10.0.0.1', '32')
@@ -51,7 +33,7 @@ export class Netmask4 {
     }
 
     try {
-      this.netLong = (ip2long(ip) & this.maskLong) >>> 0
+      this.netLong = (ipTolong(ip) & this.maskLong) >>> 0
     } catch (err) {
       throw new Error(`Invalid ip address: ${ip}`)
     }
@@ -59,13 +41,13 @@ export class Netmask4 {
     this.ip = ip
     this.cidr = `${ip}/${this.bitmask}`
     this.size = Math.pow(2, 32 - this.bitmask)
-    this.netmask = long2ip(this.maskLong)
+    this.netmask = longToIp(this.maskLong)
 
     // The host netmask, the opposite of the netmask (eg.: 0.0.0.255)
-    this.hostmask = long2ip(~this.maskLong)
+    this.hostmask = longToIp(~this.maskLong)
 
-    this.first = long2ip(this.netLong)
-    this.last = long2ip(this.netLong + this.size - 1)
+    this.first = longToIp(this.netLong)
+    this.last = longToIp(this.netLong + this.size - 1)
   }
 
   contains(ip) {
@@ -80,7 +62,7 @@ export class Netmask4 {
       return this.contains(ip.base) && this.contains(ip.last)
     } else {
       return (
-        (ip2long(ip) & this.maskLong) >>> 0 ===
+        (ipTolong(ip) & this.maskLong) >>> 0 ===
         (this.netLong & this.maskLong) >>> 0
       )
     }
@@ -91,17 +73,17 @@ export class Netmask4 {
       count = 1
     }
     return new Netmask4(
-      long2ip(this.netLong + this.size * count),
+      longToIp(this.netLong + this.size * count),
       this.bitmask
     )
   }
 
   forEach(fn) {
-    let long = ip2long(this.first)
-    const lastLong = ip2long(this.last)
+    let long = ipTolong(this.first)
+    const lastLong = ipTolong(this.last)
     let index = 0
     while (long <= lastLong) {
-      fn(long2ip(long), long, index)
+      fn(longToIp(long), long, index)
       index++
       long++
     }
@@ -112,22 +94,19 @@ export class Netmask4 {
   }
 }
 
-// exports.ip2long = ip2long
-// exports.long2ip = long2ip
-// exports.Netmask4 = Netmask4
+export class Netmask6 {
+  constructor(ipv6, netmask) {
+    if (typeof ipv6 !== 'string') {
+      throw new Error('Missing ip')
+    }
+    if (!netmask) {
+      [ipv6, netmask] = ipv6.split('/', 2)
+    }
+    if (!netmask) {
+      throw new Error(`Invalid ip address: ${ipv6}`)
+    }
 
-// class Netmask6 {
-//   constructor(ipv6, netmask) {
-//     if (typeof ipv6 !== 'string') {
-//       throw new Error('Missing ip')
-//     }
-//     if (!netmask) {
-//       ;[ipv6, netmask] = ipv6.split('/', 2)
-//     }
-//     if (!netmask) {
-//       throw new Error(`Invalid ip address: ${ipv6}`)
-//     }
+    this.cidr = `${ipv6}/${netmask}`
+  }
+}
 
-//     this.cidr = `${ipv6}/${netmask}`
-//   }
-// }
