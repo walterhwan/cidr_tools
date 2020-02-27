@@ -135,7 +135,6 @@ export class Netmask6 {
     this.size = BigIntPow(BigInt(2), BIGINT_128 - this.bitmask)
     this.netmask = bigintToIpv6(this.maskBigInt)
 
-    // The host netmask, the opposite of the netmask (eg.: 0.0.0.255)
     this.hostmask = bigintToIpv6(~this.maskBigInt)
 
     this.first = bigintToIpv6(this.netBigInt)
