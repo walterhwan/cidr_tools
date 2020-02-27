@@ -1,8 +1,11 @@
+/* global BigInt */
+
 const {
   longToIp,
   ipTolong,
   bigintToIpv6,
   ipv6ToBigint,
+  BigIntPow,
 } = require('./helper')
 
 export class Netmask4 {
@@ -12,7 +15,7 @@ export class Netmask4 {
       throw new Error('Missing ip')
     }
     if (!netmask) {
-      ;[ip, netmask] = ip.split('/', 2)
+      [ip, netmask] = ip.split('/', 2)
     }
     if (!netmask) {
       throw new Error(`Invalid ip address: ${ip}`)
@@ -94,6 +97,9 @@ export class Netmask4 {
   }
 }
 
+const IPV6_MASK = '0xffffffffffffffffffffffffffffffff'
+const BIGINT_0 = BigInt(0)
+const BIGINT_128 = BigInt(128)
 export class Netmask6 {
   constructor(ipv6, netmask) {
     if (typeof ipv6 !== 'string') {
@@ -102,11 +108,36 @@ export class Netmask6 {
     if (!netmask) {
       [ipv6, netmask] = ipv6.split('/', 2)
     }
+    
     if (!netmask) {
       throw new Error(`Invalid ip address: ${ipv6}`)
+    } else {
+      this.bitmask = BigInt(parseInt(netmask, 10))
+      this.maskBigInt = BIGINT_0
+      if (this.bitmask > BIGINT_0) {
+        this.maskBigInt = (BigInt(IPV6_MASK) << (BIGINT_128 - this.bitmask)) >> BIGINT_0
+      }
     }
 
+    if (isNaN(Number(this.bitmask)) || this.bitmask > BIGINT_128 || this.bitmask < BIGINT_0) {
+      throw new Error(`Invalid netmask: ${netmask}`)
+    }
+
+    try {
+      this.netBigInt = (ipv6ToBigint(ipv6) & this.maskBigInt) >> BIGINT_0
+    } catch (err) {
+      throw new Error(`Invalid ipv6 address: ${ipv6}`)
+    }
+
+    this.ipv6 = ipv6
     this.cidr = `${ipv6}/${netmask}`
+    this.size = BigIntPow(BigInt(2), BIGINT_128 - this.bitmask)
+    this.netmask = bigintToIpv6(this.maskBigInt)
+
+    // The host netmask, the opposite of the netmask (eg.: 0.0.0.255)
+    this.hostmask = bigintToIpv6(~this.maskBigInt)
+
+    this.first = bigintToIpv6(this.netBigInt)
+    this.last = bigintToIpv6(this.netBigInt + this.size - BigInt(1))
   }
 }
-

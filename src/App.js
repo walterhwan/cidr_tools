@@ -7,7 +7,7 @@ import BinaryExplained from './BinaryExplained'
 
 import './App.css'
 
-const DEFAULT_CIDR = '192.168.0.37/30'
+const DEFAULT_CIDR = '192.168.0.5/31'
 
 function decimalToBinary(dec) {
   return Number(dec)
