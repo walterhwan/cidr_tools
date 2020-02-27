@@ -111,8 +111,8 @@ export class Netmask6 {
     }
     this.ipv6 = unShortenIpv6(ipv6)
     
-    if (!netmask) {
-      throw new Error(`Invalid ipv6 address: ${ipv6}`)
+    if (!netmask || /[^0-9/]/.test(netmask)) {
+      throw new Error(`Invalid netmask: ${netmask}`)
     } else {
       this.bitmask = BigInt(parseInt(netmask, 10))
       this.maskBigInt = BIGINT_0
@@ -132,12 +132,19 @@ export class Netmask6 {
     }
 
     this.cidr = `${this.ipv6}/${netmask}`
-    this.size = BigIntPow(BigInt(2), BIGINT_128 - this.bitmask)
+    this._size = BigIntPow(BigInt(2), BIGINT_128 - this.bitmask)
     this.netmask = bigintToIpv6(this.maskBigInt)
 
     this.hostmask = bigintToIpv6(~this.maskBigInt)
 
     this.first = bigintToIpv6(this.netBigInt)
-    this.last = bigintToIpv6(this.netBigInt + this.size - BigInt(1))
+    this.last = bigintToIpv6(this.netBigInt + this._size - BigInt(1))
+  }
+
+  get size() {
+    return this._size.toString()
+  }
+  set size(val) {
+    this._size = val
   }
 }
