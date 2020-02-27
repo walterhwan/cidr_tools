@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/cidr_tools/precache-manifest.8f6066fe913db8b5b284dc5275814ef5.js"
+  "/cidr_tools/precache-manifest.1ee31e68774b79d07f6f2428aa2b1632.js"
 );
 
 self.addEventListener('message', (event) => {
