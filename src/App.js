@@ -131,7 +131,6 @@ function App() {
     setTimer(setTimeout(() => {
       const newCidr = value.replace(re, '')
       setInputBox(newCidr)
-      setCidr(newCidr)
     }, 2000))
   }
 
