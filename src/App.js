@@ -47,9 +47,9 @@ function cidrToDisplay(cidr, errorCallBack) {
   let block
   let errorMessage
   let version
-  if (cidr) {
+  const [ip, bitmask] = cidr.split('/')
+  if (cidr && bitmask) {
     try {
-      const [ip] = cidr.split('/')
       if (isExactIpv6(ip)) {
         block = new Netmask6(cidr)
       } else {
@@ -104,19 +104,20 @@ function App() {
     let ip = _ip
 
     // deal with ipv4 mapped ipv6
-    if (isExactIpv4mapped(_ip)) {
-      const v4 = _ip.match(reIpv4mapped)[0]
+    if (isExactIpv4mapped(ip)) {
+      const v4 = ip.match(reIpv4mapped)[0]
       ip = ipv4ToIpv4mappedIpv6Hex(v4)
       setIpVersion('IPv4-Mapped IPv6')
       setIsIpv6(true)
-      if (bitmask) setCidr(`${ip}/${bitmask}`)
+      setCidr(`${ip}/${bitmask || ''}`)
     } else if (isExactIpv6(ip)) {
-      if (bitmask) setCidr(`${ip}/${bitmask}`)
-      setIsIpv6(true)
+      setCidr(`${ip}/${bitmask || ''}`)
       setIpVersion('IPv6')
+      setIsIpv6(true)
     } else if (isExactIpv4(ip)) {
-      if (bitmask) setCidr(`${ip}/${bitmask}`)
+      setCidr(`${ip}/${bitmask || ''}`)
       setIpVersion('IPv4')
+      setIsIpv6(false)
     } else {
       setIpVersion()
       setCidr()
