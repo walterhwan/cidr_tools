@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fa4df33b13f0e09b09624a53c9d10e36",
+    "revision": "472893e90f746fb3f6fafcb84955d443",
     "url": "/cidr_tools/index.html"
   },
   {
