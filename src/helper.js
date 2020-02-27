@@ -81,11 +81,30 @@ const BigIntPow = (base, exp) => {
   return BigIntPow(base, exp - BIGINT_1) * BigIntPow(base, BIGINT_1)
 }
 
+const unShortenIpv6 = (shortenedIpv6) => {
+  const ipArr = shortenedIpv6.split('::')
+  if (ipArr.length > 2) {
+    throw new Error(`Invalid ipv6 address: ${shortenedIpv6}`)
+  } else if (ipArr.length === 1) {
+    return shortenedIpv6
+  }
+  const [left, right] = ipArr
+  const leftIpArr = left.split(':')
+  const rightIpArr = right.split(':')
+  const leftLength = left ? leftIpArr.length : 0
+  const rightLength = right ? rightIpArr.length : 0
+  const hexGroupToAdd = 8 - leftLength - rightLength
+  const ipv6Arr = [...leftIpArr, ...Array(hexGroupToAdd).fill('0'), ...rightIpArr]
+
+  return ipv6Arr.filter((hex) => hex !== '').join(':')
+}
+
 module.exports = {
   longToIp,
   bigintToIpv6,
   ipTolong,
   ipv6ToBigint,
   BigIntPow,
+  unShortenIpv6,
   printBigObj,
 }

@@ -5,6 +5,7 @@ const {
   ipTolong,
   bigintToIpv6,
   ipv6ToBigint,
+  unShortenIpv6,
   BigIntPow,
 } = require('./helper')
 
@@ -108,9 +109,10 @@ export class Netmask6 {
     if (!netmask) {
       [ipv6, netmask] = ipv6.split('/', 2)
     }
+    this.ipv6 = unShortenIpv6(ipv6)
     
     if (!netmask) {
-      throw new Error(`Invalid ip address: ${ipv6}`)
+      throw new Error(`Invalid ipv6 address: ${ipv6}`)
     } else {
       this.bitmask = BigInt(parseInt(netmask, 10))
       this.maskBigInt = BIGINT_0
@@ -124,13 +126,12 @@ export class Netmask6 {
     }
 
     try {
-      this.netBigInt = (ipv6ToBigint(ipv6) & this.maskBigInt) >> BIGINT_0
+      this.netBigInt = (ipv6ToBigint(this.ipv6) & this.maskBigInt) >> BIGINT_0
     } catch (err) {
-      throw new Error(`Invalid ipv6 address: ${ipv6}`)
+      throw new Error(`Invalid ipv6 address: ${this.ipv6}`)
     }
 
-    this.ipv6 = ipv6
-    this.cidr = `${ipv6}/${netmask}`
+    this.cidr = `${this.ipv6}/${netmask}`
     this.size = BigIntPow(BigInt(2), BIGINT_128 - this.bitmask)
     this.netmask = bigintToIpv6(this.maskBigInt)
 
